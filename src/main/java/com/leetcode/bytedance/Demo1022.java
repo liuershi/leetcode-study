@@ -25,28 +25,17 @@ public class Demo1022 {
         }
     }
 
-    int rsp = 0;
-
     public int sumRootToLeaf(TreeNode root) {
-        if (root == null) return rsp;
+        if (root == null) return 0;
 
-        List<String> paths = new ArrayList<>();
-        traceBack(root, new LinkedList<>(), paths);
-        for (String path : paths) {
-            rsp += Integer.parseInt(path, 2);
-        }
-        return rsp;
+        return dfs(root, 0);
     }
 
-    private void traceBack(TreeNode node, LinkedList<String> path, List<String> paths) {
-        if (node == null) {
-            paths.add(String.join("", path));
-            return;
-        }
-
-        path.addLast(String.valueOf(node.val));
-        traceBack(node.left, path, paths);
-        traceBack(node.right, path, paths);
-        path.removeLast();
+    private int dfs(TreeNode node, int val) {
+        if (node == null) return 0;
+        val  = (val << 1) | node.val;
+        if (node.left == null && node.right == null)
+            return val;
+        return dfs(node.left, val) + dfs(node.right, val);
     }
 }

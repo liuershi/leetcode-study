@@ -1,8 +1,5 @@
 package com.leetcode.bytedance;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @Author milindeyu
@@ -11,30 +8,23 @@ import java.util.List;
  */
 public class Demo96 {
 
+    /**
+     * @link https://leetcode.cn/problems/unique-binary-search-trees/solution/bu-tong-de-er-cha-sou-suo-shu-by-leetcode-solution/
+     * @param n
+     * @return
+     */
     public int numTrees(int n) {
         if (n < 3) return n;
 
-        List<List<Integer>> rsp = new ArrayList<>();
-        int[] nums = new int[n];
-        for (int i = 1; i <= n; i++) {
-            nums[i - 1] = i;
+        int[] G = new int[n + 1];
+        G[0] = 1;
+        G[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                G[i] += G[j - 1] * G[i - j];
+            }
         }
-
-
-        traceBack(rsp, n, nums, new LinkedList<Integer>());
-        return rsp.size();
-    }
-
-    private void traceBack(List<List<Integer>> rsp, int len, int[] nums, LinkedList<Integer> path) {
-        if (path.size() == len) {
-            rsp.add(new ArrayList<>(path));
-            return;
-        }
-
-        for (int i = 0; i < len; i++) {
-            if (path.contains(nums[i]))
-                continue;
-
-        }
+        return G[n];
     }
 }
