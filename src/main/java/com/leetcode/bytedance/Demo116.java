@@ -32,9 +32,49 @@ public class Demo116 {
         }
     }
 
-    Map<Integer, List<Node>> map = new HashMap<>();
+    Map<Integer, Node> depthNodeMap = new HashMap<>();
 
     public Node connect(Node root) {
+//        return method1(root);
+//        return method2(root);
+        // 实现常量级别的空间复杂度和O(N)时间复杂度
+        dfsThree(root, null);
+        return root;
+    }
+
+    private void dfsThree(Node node, Node right) {
+        if (node == null) return;
+        node.next = right;
+        dfsThree(node.left, node.right);
+        dfsThree(node.right, right == null ? null : right.left);
+    }
+
+    /**
+     * 方式2：相较于方式1时间复杂度更低，空间复杂度也差不多
+     * @param root
+     * @return
+     */
+    private Node method2(Node root) {
+        dfsTwo(root, 0);
+        return root;
+    }
+
+    private void dfsTwo(Node node, int depth) {
+        if (node == null) return;
+        if (depthNodeMap.get(depth) != null)
+            depthNodeMap.get(depth).next = node;
+        depthNodeMap.put(depth, node);
+        depth++;
+        dfsTwo(node.left, depth);
+        dfsTwo(node.right, depth);
+    }
+
+    /**
+     * 方式1
+     * @param root
+     * @return
+     */
+    private Node method1(Node root) {
         dfs(root, 0);
         for (int i = 1; i < map.keySet().size(); i++) {
             List<Node> nodes = map.get(i);
@@ -46,6 +86,8 @@ public class Demo116 {
         }
         return root;
     }
+
+    Map<Integer, List<Node>> map = new HashMap<>();
 
     private void dfs(Node node, int depth) {
         if (node == null) return;
