@@ -2,6 +2,7 @@ package com.leetcode.bytedance;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author milindeyu
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class Demo30_1 {
 
-    int size;
+    /*int size;
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> rsp = new ArrayList<>();
         if (s == null || words == null || (size = words.length) == 0) return rsp;
@@ -43,5 +44,55 @@ public class Demo30_1 {
             path.removeLast();
             set.remove(i);
         }
+    }*/
+
+
+    /**
+     * 使用哈希表基于滑动窗口实现
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> rsp = new ArrayList<>();
+        int size;
+        if (s == null || words == null || (size = words.length) == 0) return rsp;
+        int wLen = words[0].length();
+        int sLen = s.length();
+        if (sLen < wLen * size) return rsp;
+        Map<String, Long> wMap = new HashMap<>();
+        for (int i = 0; i < size; i++) {
+            wMap.put(words[i], wMap.getOrDefault(words[i], 0L) + 1);
+        }
+        int wLenSum = wLen * size;
+        for (int i = 0; i <= sLen - wLenSum; i++) {
+            Map<String, Long> sMap = getWords(s, i, wLen, size);
+            if (check(wMap, sMap)) rsp.add(i);
+        }
+        return rsp;
+    }
+
+    private boolean check(Map<String, Long> wMap, Map<String, Long> sMap) {
+        for (Map.Entry<String, Long> entry : wMap.entrySet()) {
+            if (sMap.get(entry.getKey()) == null || !sMap.get(entry.getKey()).equals(entry.getValue())) return false;
+        }
+        return true;
+    }
+
+    private Map<String, Long> getWords(String s, int begin, int wLen, int size) {
+        String[] words = new String[size];
+        int i = 0;
+        while (i < size) {
+            words[i++] = s.substring(begin, begin + wLen);
+            begin += wLen;
+        }
+        return Stream.of(words).collect(Collectors.groupingBy(item -> item, Collectors.counting()));
+    }
+
+    public static void main(String[] args) {
+        Demo30_1 demo30_1 = new Demo30_1();
+        String s = "wordgoodgoodgoodbestword";
+        String[] words= {"word","good","best","good"};
+        System.out.println(demo30_1.findSubstring(s, words));
     }
 }
