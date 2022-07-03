@@ -1,17 +1,12 @@
 package com.leetcode.bytedance;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * @Author milindeyu
- * @Date 2022/5/30 12:11 上午
+ * @Date 2022/6/6 11:16 下午
  * @Version 1.0
  */
-public class Demo1022 {
+public class Demo129 {
 
-    
     public class TreeNode {
         int val;
         TreeNode left;
@@ -25,17 +20,19 @@ public class Demo1022 {
         }
     }
 
-    public int sumRootToLeaf(TreeNode root) {
-        if (root == null) return 0;
+    int sum = 0;
 
-        return dfs(root, 0);
+    public int sumNumbers(TreeNode root) {
+        dfs(root, 0);
+        return sum;
     }
 
-    private int dfs(TreeNode node, int val) {
-        if (node == null) return 0;
-        val  = (val << 1) | node.val;
+    private void dfs(TreeNode node, int preVal) {
+        if (node == null) return;
+        preVal = 10 * preVal + node.val;
         if (node.left == null && node.right == null)
-            return val;
-        return dfs(node.left, val) + dfs(node.right, val);
+            sum += preVal;
+        dfs(node.left, preVal);
+        dfs(node.right, preVal);
     }
 }
