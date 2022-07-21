@@ -21,7 +21,7 @@ public class Demo345 {
 
     public String reverseVowels(String s) {
         if (s == null || "".equals(s.trim())) return s;
-        Set<Character> vowels = new HashSet<>(){{
+        Set<Character> vowels = new HashSet<Character>(){{
             add('a');
             add('e');
             add('i');
