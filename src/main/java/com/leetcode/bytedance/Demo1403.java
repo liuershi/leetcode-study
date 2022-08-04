@@ -13,6 +13,16 @@ import java.util.List;
  */
 public class Demo1403 {
 
+
+    /**
+     * 总体思路：
+     *      1. 先数组排序
+     *      2. 求数组的总和
+     *      3. 倒序求遍历的总和，当遍历的和大于总和的一半时认为符合条件，记录此时的下标index
+     *      4. 从index位置向后遍历到数组尾的元素为符合条件
+     * @param nums
+     * @return
+     */
     public List<Integer> minSubsequence(int[] nums) {
         Arrays.sort(nums);
 
