@@ -1,6 +1,8 @@
 package com.leetcode.bytedance;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -21,32 +23,43 @@ public class Demo160 {
     }
 
     /**
-     * todo 有问题？当前解法错误
      * @param headA
      * @param headB
      * @return
      */
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        Stack<ListNode> stackA = new Stack<>();
-        Stack<ListNode> stackB = new Stack<>();
-        while (headA != null) {
-            stackA.push(headA);
-            headA = headA.next;
+//        return method1(headA, headB);
+
+        // 此种方式的时间和空间的复杂度都为O(1)
+        if (headA == null || headB == null) return null;
+        ListNode nextA = headA, nextB = headB;
+        while (nextA != nextB) {
+            nextA = nextA == null ? headB : nextA.next;
+            nextB = nextB == null ? headA : nextB.next;
         }
-        while (headB != null) {
-            stackB.push(headB);
-            headB = headB.next;
-        }
-        int length = Math.min(stackA.size(), stackB.size());
-        ListNode current = null;
-        for (int i = 0; i < length; i++) {
-            ListNode popA = stackA.pop();
-            ListNode popB = stackB.pop();
-            if (popA.val != popB.val) {
-                break;
+        return nextA;
+    }
+
+    /**
+     * 时间和空间复杂度都为O(m + n)
+     * @param headA
+     * @param headB
+     * @return
+     */
+    private ListNode method1(ListNode headA, ListNode headB) {
+        Set<ListNode> set = new HashSet<>();
+        while (headA != null || headB != null) {
+            if (headA != null) {
+                if (set.contains(headA)) return headA;
+                set.add(headA);
+                headA = headA.next;
             }
-            current = popA;
+            if (headB != null) {
+                if (set.contains(headB)) return headB;
+                set.add(headB);
+                headB = headB.next;
+            }
         }
-        return current;
+        return null;
     }
 }

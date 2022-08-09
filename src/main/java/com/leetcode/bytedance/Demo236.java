@@ -1,6 +1,6 @@
 package com.leetcode.bytedance;
 
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @Author milindeyu
@@ -71,4 +71,61 @@ public class Demo236 {
         if (!qAdd)
             qPath.removeLast();
     }
+
+
+
+    // =============================
+    // =============================
+    // 基于后序遍历的的方式实现
+    TreeNode rsp, p, q;
+    public TreeNode lowestCommonAncestorTwo(TreeNode root, TreeNode p, TreeNode q) {
+        this.p = p;
+        this.q = q;
+        helper(root);
+        return rsp;
+    }
+
+    private boolean helper(TreeNode node) {
+        if (node == null || rsp != null) return false;
+        boolean left = helper(node.left);
+        boolean right = helper(node.right);
+        if (!left && !right) return node.val == p.val || node.val == q.val;
+        else if (!left || !right) {
+            if (node.val == p.val || node.val == q.val) rsp = node;
+        } else rsp = node;
+        return true;
+    }
+
+
+    // =============================
+    // =============================
+    // 基于哈希表存储父子节点关系实现
+    Map<TreeNode, TreeNode> nodeParentMap = new HashMap<>();
+    Set<Integer> visitor = new HashSet<>();
+    public TreeNode lowestCommonAncestorThree(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == p || root == q) return root;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.offer(root);
+        while (!stack.isEmpty()) {
+            int size = stack.size();
+            while (size-- > 0) {
+                TreeNode node = stack.poll();
+                if (node.left != null) {
+                    nodeParentMap.put(node.left, node);
+                    stack.offer(node.left);
+                }
+                if (node.right != null) {
+                    nodeParentMap.put(node.right, node);
+                    stack.offer(node.right);
+                }
+            }
+        }
+
+        do {
+            visitor.add(p.val);
+        } while ((p = nodeParentMap.get(p)) != null);
+        while (!visitor.contains(q.val)) q = nodeParentMap.get(q);
+        return q;
+    }
+
 }
