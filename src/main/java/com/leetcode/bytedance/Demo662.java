@@ -27,28 +27,32 @@ public class Demo662 {
 
 
     public int widthOfBinaryTree(TreeNode root) {
+        // 思路：对于二叉树，每个节点值和其左右子节点的关系满足父节点节点值为n，
+        // 则左子节点值为 n * 2 + 1，右子节点值为 n * 2 + 2，罗列每层的所有
+        // 节点，根据第一和最后一个节点值的差求得每层的最大节点数
         if (root == null) return 0;
-        Deque<TreeNode> queue = new ArrayDeque<>();
-        queue.addLast(root);
-        int rsp = 0;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.offer(root);
+        int res = 1;
+        while (!stack.isEmpty()) {
+            int size = stack.size();
             while (size-- > 0) {
-                TreeNode node = queue.removeFirst();
+                TreeNode node = stack.poll();
                 if (node.left != null) {
+                    // 此时值需要根据父节点来设置
                     node.left.val = node.val * 2 + 1;
-                    queue.addLast(node.left);
+                    stack.offer(node.left);
                 }
                 if (node.right != null) {
                     node.right.val = node.val * 2 + 2;
-                    queue.addLast(node.right);
+                    stack.offer(node.right);
                 }
             }
-            if (!queue.isEmpty()) {
-                int maxWidth = Math.abs(queue.peekLast().val - queue.peekFirst().val) + 1;
-                rsp = Math.max(rsp, maxWidth);
+            // 当此时有节点时求最大节点数
+            if (!stack.isEmpty()) {
+                res = Math.max(res, stack.peekLast().val - stack.peekFirst().val + 1);
             }
         }
-        return rsp;
+        return res;
     }
 }
