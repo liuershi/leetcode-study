@@ -8,6 +8,6 @@ package com.leetcode.weekly.dipingxian.week308;
 public class Demo6163 {
 
     public int[][] buildMatrix(int k, int[][] rowConditions, int[][] colConditions) {
-
+        return null;
     }
 }
