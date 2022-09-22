@@ -10,6 +10,28 @@ import java.util.Arrays;
 public class Demo300 {
 
     public int lengthOfLIS(int[] nums) {
+//        return method1(nums);
+
+        // 方法二：基于动态规划
+        int len = nums.length;
+        int[] dp = new int[len];
+        Arrays.fill(dp, 1);
+        int res = 1;
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    /**
+     * 二分法实现
+     * @param nums
+     * @return
+     */
+    private int method1(int[] nums) {
         int[] res = new int[nums.length];
 
         int len = 0;
