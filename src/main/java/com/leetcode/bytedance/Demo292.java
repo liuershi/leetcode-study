@@ -8,24 +8,6 @@ package com.leetcode.bytedance;
 public class Demo292 {
 
     public boolean canWinNim(int n) {
-        return firstFun(n) || !secFun(n);
-    }
-
-    public boolean firstFun(int n) {
-        if (n < 4) return true;
-        boolean rsp = false;
-        for (int i = 1; i <= 3; i++) {
-            rsp |= secFun(n - i);
-        }
-        return !rsp;
-    }
-
-    public boolean secFun(int n) {
-        if (n < 4) return true;
-        boolean rsp = false;
-        for (int i = 1; i <= 3; i++) {
-            rsp |= firstFun(n - i);
-        }
-        return !rsp;
+        return n % 4 != 0;
     }
 }
