@@ -18,6 +18,6 @@ public class Demo779 {
         if (k <= halfLen)
             return kthGrammar(n - 1, k);
         else
-            return kthGrammar(n - 1, k >> 1) ^ 1;
+            return kthGrammar(n - 1, k - halfLen) ^ 1;
     }
 }
