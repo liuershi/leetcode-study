@@ -49,7 +49,7 @@ public class Demo904 {
     }
 
     public static void main(String[] args) {
-        var demo904 = new Demo904();
+        Demo904 demo904 = new Demo904();
         int[] nums = {1,9,1,8,22,0,22,19,19,2,19,6,6,19,2,20,2,9,9,9,9,16,19,16,19,11,19,0,19,19};
         int[] nums1 = {1,1,6,5,6,6,1,1,1,1};
         System.out.println(demo904.totalFruit(nums));
