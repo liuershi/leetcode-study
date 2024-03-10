@@ -26,18 +26,13 @@ public class Demo589 {
         }
     }
 
+    private List<Integer> ans = new ArrayList<>();
     public List<Integer> preorder(Node root) {
-        List<Integer> rsp = new ArrayList<>();
-        if (root == null) return rsp;
-        dfs(root, rsp);
-        return rsp;
-    }
-
-    private void dfs(Node node, List<Integer> rsp) {
-        if (node == null) return;
-        rsp.add(node.val);
-        for (Node child : node.children) {
-            dfs(child, rsp);
+        if (root == null) {
+            return ans;
         }
+        ans.add(root.val);
+        root.children.forEach(this::preorder);
+        return ans;
     }
 }
